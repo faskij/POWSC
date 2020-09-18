@@ -2,8 +2,8 @@ The purpose of this r-markdown is to set up a program to run the r package "POWS
 
 
 Install Software:
-```{r message=FALSE}
-install.packages("RCurl")
+  ```{r message=FALSE}
+install.packages(c("RCurl", "Bioconductor"))
 setRepositories(ind = 1:5)
 install.packages(c("Biobase", "limma", "SingleCellExperiment", "MAST", "SummarizedExperiment"))
 
