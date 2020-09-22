@@ -2,8 +2,7 @@ The purpose of this r-markdown is to set up a program to run the r package "POWS
 
 
 Install Software:
-  ```{r message=FALSE}
-install.packages(c("RCurl", "Bioconductor"))
+```{r message=FALSE}
 setRepositories(ind = 1:5)
 install.packages(c("Biobase", "limma", "SingleCellExperiment", "MAST", "SummarizedExperiment"))
 
@@ -15,13 +14,30 @@ install_github("suke18/POWSC", build_vignettes = T, dependencies = T)
 **Note: SC2P is a package also create by the Wu Lab. It's purpose is to test DE for single cell RNA-seq data.
 
 
-Estimation for a single cell type
+Estimation for a single cell type. In this case, we could upload a data set (here they use "es_mef_sce"). 
+
+"sce" is defined by the data set. Specified to be looking at fibroblast cells. 
+
+"est_Paras" is a list of data for of 44 cells (columns) by 11774 genes (rows). Each cell contains a value representing expression level. The list includes a matrix ($exprs), a vector of genes ($pi.g), a vector of cells ($p0), another vector for cells ($lambda), a vector for mu ($mu), a vector for standard deviation of each gene ($sd), and a vector sf for each cell ($sf).
+
+"simData" is a simulated data set for 2 groups containing ix.DE1, ix.DE2, ix.DEs (which is a vector of ix.DE1 followed by ix.DE2), ix.DEGs (names to values of ix.DEs), pi.g1 and pig2 which seem to be normalized according to 3 RNA spike in's, mu1 and mu2, lfc, and pi.df.
+
+"de" is list. It contains 3 tables for test type: cont, disc, hurdle; and 2 data frames containing 3 variables in each: geneIndex, pval, fdr.
+
+"estPower" is a list that contains information on the power of the simulated experiemt. Here the author used Power_Disc and Power_Cont to list the power analyses. The difference between the two functions is the default delta value and strata.
 ```{r}
 library(POWSC)
 data("es_mef_sce")
 sce = es_mef_sce[, colData(es_mef_sce)$cellTypes == "fibro"]
 est_Paras = Est2Phase(sce)
+
+simData = Simulate2SCE(n=100, estParas1 = est_Paras, estParas2 = est_Paras)
+de = runMAST(simData$sce)
+estPower1 = Power_Disc(de, simData = simData)
+estPower2 = Power_Cont(de, simData = simData)
 ```
+
+
 
 Simulate data set and plot for two group comparison 
 ```{r}
