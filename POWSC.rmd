@@ -20,7 +20,7 @@ Estimation for a single cell type. In this case, we could upload a data set (her
 
 "est_Paras" is a list of data for of 44 cells (columns) by 11774 genes (rows). Each cell contains a value representing expression level. The list includes a matrix ($exprs), a vector of genes ($pi.g), a vector of cells ($p0), another vector for cells ($lambda), a vector for mu ($mu), a vector for standard deviation of each gene ($sd), and a vector sf for each cell ($sf).
 
-"simData" is a simulated data set for 2 groups containing ix.DE1, ix.DE2, ix.DEs (which is a vector of ix.DE1 followed by ix.DE2), ix.DEGs (names to values of ix.DEs), pi.g1 and pig2 which seem to be normalized according to 3 RNA spike in's, mu1 and mu2, lfc, and pi.df.
+"simData" is a simulated data set for 2 groups containing ix.DE1, ix.DE2, ix.DEs (which is a vector of ix.DE1 followed by ix.DE2), ix.DEGs (names to values of ix.DEs), pi.g1 and pig2 which seem to be normalized according to 3 RNA spike in's, mu1 and mu2, lfc, and pi.df. It comes from the function Simulate2SCE(). Simulate2SCE() simulates data for a 2 group comparrision. Multi group comparrision can be done using SimulateMultiSCEs.
 
 "de" is list. It contains 3 tables for test type: cont, disc, hurdle; and 2 data frames containing 3 variables in each: geneIndex, pval, fdr.
 
@@ -39,7 +39,9 @@ estPower2 = Power_Cont(de, simData = simData)
 
 
 
-Simulate data set and plot for two group comparison 
+Simulate data set and plot for two group comparison:
+
+"runPOWSC" estimates parameters fro a giver data set. The input is an experimental size simulation, desired percent of differentially expressed genes, a template prarameter estiamted from a cell type, method of DE analysis (MAST or SC2P), a cell type, cell proportions, alpha, disc_delta which is the zero ratio changes cutoff, and cont_delta which is the log fold change cutoff.
 ```{r}
 sim_size = c(100, 400, 1000) # A numeric vector
 pow_rslt = runPOWSC(sim_size = sim_size, est_Paras = est_Paras,per_DE=0.05, DE_Method = "MAST", Cell_Type = "PW") # Note, using our previous developed tool SC2P is faster.
